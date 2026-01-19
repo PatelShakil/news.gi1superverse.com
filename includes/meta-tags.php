@@ -19,7 +19,7 @@ function generateMetaTags($news = null, $isHomePage = false)
 
         // Fix image URL if it's relative
         if (!empty($image) && !str_starts_with($image, 'http')) {
-            $image = str_replace('/storage/', API_BASE_URL . '/storage/', $image);
+            $image = STORAGE_URL . $image;
         }
 
         $url = SITE_URL . '/news/' . ($news['slug'] ?? '');
