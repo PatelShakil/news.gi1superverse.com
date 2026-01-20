@@ -17,7 +17,7 @@ require_once __DIR__ . '/config.php';
     ?>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+    <!-- <link rel="icon" type="image/png" href="/assets/images/favicon.png"> -->
 
 
 
