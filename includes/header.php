@@ -41,6 +41,10 @@ require_once __DIR__ . '/config.php';
         body {
             font-family: 'Poppins', sans-serif;
         }
+        a{
+            color: blue;
+            text-decoration: underline;
+        }
     </style>
     <!-- Apple Touch Icon -->
     <link rel="apple-touch-icon" href="/assets/images/icons/icon-192x192.png">
