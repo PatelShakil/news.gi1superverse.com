@@ -1,20 +1,20 @@
 // Service Worker for PWA - Offline Caching
 
 const CACHE_NAME = 'gi1-news-v1';
-// const urlsToCacheProd = [
-//     '/',
-//     '/news',
-//     '/assets/css/style.css',
-//     '/assets/js/main.js',
-//     '/assets/js/analytics.js',
-// ];
 const urlsToCache = [
-    'http://localhost/news-site/',
-    'http://localhost/news-site/news',
-    'http://localhost/news-site/assets/css/style.css',
-    'http://localhost/news-site/assets/js/main.js',
-    'http://localhost/news-site/assets/js/analytics.js',
+    '/',
+    '/news',
+    '/assets/css/style.css',
+    '/assets/js/main.js',
+    '/assets/js/analytics.js',
 ];
+// const urlsToCache = [
+//     'http://localhost/news-site/',
+//     'http://localhost/news-site/news',
+//     'http://localhost/news-site/assets/css/style.css',
+//     'http://localhost/news-site/assets/js/main.js',
+//     'http://localhost/news-site/assets/js/analytics.js',
+// ];
 
 // Install Service Worker
 self.addEventListener('install', (event) => {

@@ -41,7 +41,7 @@ $pageTitle = 'All News';
 </head>
 
 <!-- Hero Section -->
-<section class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-16">
+<section class="bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 text-white py-16">
     <div class="container mx-auto px-4">
         <h1 class="text-4xl md:text-5xl font-bold mb-4">Latest News</h1>
         <p class="text-xl opacity-90">Stay updated with the latest stories and updates</p>
@@ -112,7 +112,7 @@ $pageTitle = 'All News';
                 <?php
                 $imageUrl = $news['img_url'] ?? '';
                 if (!empty($imageUrl) && !str_starts_with($imageUrl, 'http')) {
-                    $imageUrl = STORAGE_URL. $imageUrl;
+                    $imageUrl = STORAGE_URL . $imageUrl;
                 }
                 ?>
                 <article class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">

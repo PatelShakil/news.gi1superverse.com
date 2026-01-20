@@ -82,13 +82,13 @@
 </footer>
 
 <!-- Analytics Tracking Script -->
-<script src="http://localhost/news-site/assets/js/analytics.js"></script>
+<script src="<?= BASE_PATH ?>/assets/js/analytics.js"></script>
 
 <!-- Main JS -->
-<script src="http://localhost/news-site/assets/js/main.js"></script>
+<script src="<?= BASE_PATH ?>/assets/js/main.js"></script>
 
 <!-- Service Worker Registration -->
-<script src="http://localhost/news-site/assets/js/pwa.js"></script>
+<script src="<?= BASE_PATH ?>/assets/js/pwa.js"></script>
 </body>
 
 </html>

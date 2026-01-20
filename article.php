@@ -215,7 +215,7 @@ $pageTitle = $news['title'];
                     <?php
                     $relatedImageUrl = $relatedNews['img_url'] ?? '';
                     if (!empty($relatedImageUrl) && !str_starts_with($relatedImageUrl, 'http')) {
-                        $relatedImageUrl = str_replace('/storage/', API_BASE_URL . '/storage/', $relatedImageUrl);
+                        $relatedImageUrl = STORAGE_URL . $relatedImageUrl;
                     }
                     ?>
                     <article class="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">

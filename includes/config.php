@@ -19,8 +19,8 @@ if (IS_LOCAL_ENV) {
     // Local Development Configuration
     define('API_BASE_URL', 'https://api.gi1superverse.com/api');
     define('STORAGE_URL', 'https://api.gi1superverse.com/storage/');
-    define('SITE_URL', 'http://localhost/news-site');
-    define('BASE_PATH', '/news-site'); // Base path for local XAMPP
+    define('SITE_URL', 'http://localhost/news.gi1superverse.com');
+    define('BASE_PATH', '/news.gi1superverse.com'); // Base path for local XAMPP
 } else {
     // Production Configuration
     define('API_BASE_URL', 'https://api.gi1superverse.com/api');
