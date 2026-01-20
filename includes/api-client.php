@@ -91,7 +91,7 @@ function trackNewsShare($newsId, $platform) {
  * Like news
  */
 function likeNews($newsId) {
-    return makeApiRequest('/news/like/' . $newsId, 'POST');
+    return makeApiRequest('/news/like/' . $newsId, 'GET');
 }
 
 /**

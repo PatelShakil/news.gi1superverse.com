@@ -19,11 +19,11 @@ require_once __DIR__ . '/config.php';
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/assets/images/favicon.png">
 
-   
+
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
- <!-- Tailwind CSS Configuration -->
+    <!-- Tailwind CSS Configuration -->
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -33,9 +33,15 @@ require_once __DIR__ . '/config.php';
     <link rel="stylesheet" href="/assets/css/style.css">
 
     <!-- PWA Manifest -->
-    <link rel="manifest" href="/news-site/manifest.json">
-    <meta name="theme-color" content="#3B82F6">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#f9c53d">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
     <!-- Apple Touch Icon -->
     <link rel="apple-touch-icon" href="/assets/images/icons/icon-192x192.png">
 </head>
