@@ -161,7 +161,7 @@ $pageTitle = $news['title'];
                 </svg>
                 Copy
             </button>
-        </div>
+        </div>                                                                               
     
     <!-- Reading Progress Bar -->
     <div id="reading-progress" class="fixed top-0 left-0 h-1 bg-blue-600 z-50 transition-all duration-150" style="width: 0%"></div>
@@ -266,6 +266,58 @@ const newsTitle = '<?= htmlspecialchars($news['title']) ?>';
 const newsId = <?= $news['id'] ?>;
 const baseUrl = '<?= SITE_URL ?>/news/' + newsSlug;
 
+// ========================================
+// WEBVIEW DETECTION
+// ========================================
+
+/**
+ * Detect if running inside a WebView
+ * Checks for common WebView user agents and native app indicators
+ */
+function isWebView() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    
+    // Check for common WebView indicators
+    const webViewIndicators = [
+        /wv/i,                    // Android WebView
+        /WebView/i,               // Generic WebView
+        /; wv\)/i,                // Android WebView pattern
+        /Version\/[\d.]+.*Safari/i && /Android/i  // Android WebView with Safari
+    ];
+    
+    // Check if any indicator matches
+    for (let indicator of webViewIndicators) {
+        if (indicator.test && indicator.test(userAgent)) {
+            return true;
+        }
+    }
+    
+    // Check for native app bridge (custom implementation)
+    if (window.AndroidInterface || window.webkit?.messageHandlers?.iOSInterface) {
+        return true;
+    }
+    
+    return false;
+}
+
+/**
+ * Check if Web Share API is available
+ */
+function canUseWebShare() {
+    return navigator.share !== undefined;
+}
+
+/**
+ * Check if running on mobile device
+ */
+function isMobile() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+// ========================================
+// SHARE URL GENERATION
+// ========================================
+
 function getShareUrl(platform) {
     const params = new URLSearchParams({
         utm_source: platform,
@@ -276,37 +328,233 @@ function getShareUrl(platform) {
     return baseUrl + '?' + params.toString();
 }
 
+// ========================================
+// SMART SHARING FUNCTIONS
+// ========================================
+
+/**
+ * Open URL in external browser (outside WebView)
+ * This prevents URLs from opening inside the WebView
+ */
+function openExternalUrl(url) {
+    // Try Android native bridge
+    if (window.AndroidInterface && window.AndroidInterface.openExternalBrowser) {
+        window.AndroidInterface.openExternalBrowser(url);
+        return true;
+    }
+    
+    // Try iOS native bridge
+    if (window.webkit?.messageHandlers?.iOSInterface) {
+        window.webkit.messageHandlers.iOSInterface.postMessage({
+            action: 'openExternalBrowser',
+            url: url
+        });
+        return true;
+    }
+    
+    // Fallback: Try to open in system browser using intent (Android)
+    if (navigator.userAgent.match(/Android/i)) {
+        // Create a hidden link with target="_system" or use intent URL
+        const link = document.createElement('a');
+        link.href = url;
+        link.target = '_system'; // Some WebViews respect this
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        return true;
+    }
+    
+    // Fallback: Regular window.open
+    window.open(url, '_blank', 'noopener,noreferrer');
+    return true;
+}
+
+/**
+ * Use Web Share API for native sharing
+ */
+function useWebShare(platform, shareUrl) {
+    if (!canUseWebShare()) {
+        return false;
+    }
+    
+    const shareData = {
+        title: newsTitle,
+        text: newsTitle,
+        url: shareUrl
+    };
+    
+    navigator.share(shareData)
+        .then(() => {
+            trackShare(platform);
+        })
+        .catch((error) => {
+            console.log('Web Share failed:', error);
+            // Fallback to platform-specific sharing
+            return false;
+        });
+    
+    return true;
+}
+
+/**
+ * Facebook Share
+ */
 function shareOnFacebook() {
     const url = getShareUrl('facebook');
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank', 'width=600,height=400');
+    const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+    
+    // In WebView or mobile: Try Web Share API first
+    if ((isWebView() || isMobile()) && canUseWebShare()) {
+        if (useWebShare('facebook', url)) {
+            return;
+        }
+    }
+    
+    // In WebView: Open in external browser
+    if (isWebView()) {
+        openExternalUrl(shareUrl);
+    } else {
+        // Desktop browser: Use popup
+        window.open(shareUrl, '_blank', 'width=600,height=400,noopener,noreferrer');
+    }
+    
     trackShare('facebook');
 }
 
+/**
+ * Twitter/X Share
+ */
 function shareOnTwitter() {
     const url = getShareUrl('twitter');
-    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(newsTitle)}`, '_blank', 'width=600,height=400');
+    const shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(newsTitle)}`;
+    
+    // In WebView or mobile: Try Web Share API first
+    if ((isWebView() || isMobile()) && canUseWebShare()) {
+        if (useWebShare('twitter', url)) {
+            return;
+        }
+    }
+    
+    // In WebView: Open in external browser
+    if (isWebView()) {
+        openExternalUrl(shareUrl);
+    } else {
+        // Desktop browser: Use popup
+        window.open(shareUrl, '_blank', 'width=600,height=400,noopener,noreferrer');
+    }
+    
     trackShare('twitter');
 }
 
+/**
+ * LinkedIn Share
+ */
 function shareOnLinkedIn() {
     const url = getShareUrl('linkedin');
-    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank', 'width=600,height=400');
+    const shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+    
+    // In WebView or mobile: Try Web Share API first
+    if ((isWebView() || isMobile()) && canUseWebShare()) {
+        if (useWebShare('linkedin', url)) {
+            return;
+        }
+    }
+    
+    // In WebView: Open in external browser
+    if (isWebView()) {
+        openExternalUrl(shareUrl);
+    } else {
+        // Desktop browser: Use popup
+        window.open(shareUrl, '_blank', 'width=600,height=400,noopener,noreferrer');
+    }
+    
     trackShare('linkedin');
 }
 
+/**
+ * WhatsApp Share
+ */
 function shareOnWhatsApp() {
     const url = getShareUrl('whatsapp');
-    window.open(`https://wa.me/?text=${encodeURIComponent(newsTitle + ' ' + url)}`, '_blank');
+    const text = `${newsTitle} ${url}`;
+    
+    // WhatsApp has different URLs for mobile and desktop
+    let shareUrl;
+    if (isMobile()) {
+        // Mobile: Use wa.me (opens WhatsApp app)
+        shareUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    } else {
+        // Desktop: Use web.whatsapp.com
+        shareUrl = `https://web.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+    }
+    
+    // In WebView or mobile: Try Web Share API first
+    if ((isWebView() || isMobile()) && canUseWebShare()) {
+        if (useWebShare('whatsapp', url)) {
+            return;
+        }
+    }
+    
+    // In WebView: Open in external browser
+    if (isWebView()) {
+        openExternalUrl(shareUrl);
+    } else {
+        // Desktop/Mobile browser: Direct open
+        window.open(shareUrl, '_blank', 'noopener,noreferrer');
+    }
+    
     trackShare('whatsapp');
 }
 
+/**
+ * Copy Link to Clipboard
+ */
 function copyLink() {
     const url = getShareUrl('copy_link');
-    navigator.clipboard.writeText(url).then(() => {
+    
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url)
+            .then(() => {
+                alert('Link copied to clipboard!');
+                trackShare('copy_link');
+            })
+            .catch((error) => {
+                console.error('Clipboard copy failed:', error);
+                fallbackCopyToClipboard(url);
+            });
+    } else {
+        fallbackCopyToClipboard(url);
+    }
+}
+
+/**
+ * Fallback copy method for older browsers
+ */
+function fallbackCopyToClipboard(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        document.execCommand('copy');
         alert('Link copied to clipboard!');
         trackShare('copy_link');
-    });
+    } catch (error) {
+        console.error('Fallback copy failed:', error);
+        alert('Failed to copy link. Please copy manually: ' + text);
+    }
+    
+    document.body.removeChild(textArea);
 }
+
+// ========================================
+// ANALYTICS TRACKING
+// ========================================
 
 function trackShare(platform) {
     fetch('<?= API_BASE_URL ?>/news/track-share/' + newsId, {
@@ -315,6 +563,8 @@ function trackShare(platform) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ platform: platform })
+    }).catch(error => {
+        console.error('Failed to track share:', error);
     });
 }
 
@@ -334,24 +584,45 @@ function likeArticle() {
                 document.getElementById('like-btn').classList.remove('animate-pulse');
             }, 1000);
         }
+    })
+    .catch(error => {
+        console.error('Failed to like article:', error);
     });
 }
 
-// Reading Progress
+// ========================================
+// READING PROGRESS
+// ========================================
+
 window.addEventListener('scroll', () => {
     const article = document.querySelector('article');
+    if (!article) return;
+    
     const scrollTop = window.pageYOffset;
     const docHeight = article.offsetHeight;
     const winHeight = window.innerHeight;
     const scrollPercent = scrollTop / (docHeight - winHeight);
     const scrollPercentRounded = Math.round(scrollPercent * 100);
     
-    document.getElementById('reading-progress').style.width = scrollPercentRounded + '%';
+    const progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+        progressBar.style.width = Math.min(100, Math.max(0, scrollPercentRounded)) + '%';
+    }
 });
 
-// Track analytics on page load
+// ========================================
+// INITIALIZATION
+// ========================================
+
 window.addEventListener('load', () => {
-    console.log("ANALYTICS LOADING")
+    console.log('Environment:', {
+        isWebView: isWebView(),
+        isMobile: isMobile(),
+        canUseWebShare: canUseWebShare(),
+        userAgent: navigator.userAgent
+    });
+    
+    // Track analytics
     trackAnalytics();
 });
 </script>

@@ -40,61 +40,189 @@ $pageTitle = 'All News';
     <?php generateMetaTags(null, true); ?>
 </head>
 
-<!-- Hero Section -->
-<section class="bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600 text-white py-16">
-    <div class="container mx-auto px-4">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">Latest News</h1>
-        <p class="text-xl opacity-90">Stay updated with the latest stories and updates</p>
+<!-- Premium Hero Section -->
+<section class="hero-gradient text-white py-20 lg:py-32 relative">
+    <!-- Floating Particles -->
+    <div class="hero-particle"></div>
+    <div class="hero-particle"></div>
+    <div class="hero-particle"></div>
+    <div class="hero-particle"></div>
+    
+    <!-- Hero Content -->
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-4xl mx-auto text-center">
+            <!-- Glassmorphism Badge -->
+            <div class="inline-flex items-center gap-2 glass-effect rounded-full px-6 py-3 mb-8 fade-in-up">
+                <svg class="w-5 h-5 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+                <span class="text-sm font-semibold tracking-wide">Breaking News & Latest Updates</span>
+            </div>
+            
+            <!-- Hero Title -->
+            <h1 class="hero-title text-5xl md:text-7xl font-extrabold mb-6 leading-tight fade-in-up" style="animation-delay: 0.1s;">
+                Discover Stories<br/>
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-yellow-200 via-pink-200 to-blue-200">
+                    That Matter
+                </span>
+            </h1>
+            
+            <!-- Hero Subtitle -->
+            <p class="text-xl md:text-2xl opacity-95 mb-8 leading-relaxed fade-in-up" style="animation-delay: 0.2s;">
+                Stay informed with real-time news coverage from around the world.<br class="hidden md:block"/>
+                Your trusted source for breaking news and in-depth analysis.
+            </p>
+            
+            <!-- Stats Row -->
+            <div class="grid grid-cols-3 gap-6 max-w-2xl mx-auto fade-in-up" style="animation-delay: 0.3s;">
+                <div class="glass-effect rounded-2xl p-6 hover-glow">
+                    <div class="text-3xl md:text-4xl font-bold mb-2"><?= count($newsList) ?>+</div>
+                    <div class="text-sm md:text-base opacity-90">Articles</div>
+                </div>
+                <div class="glass-effect rounded-2xl p-6 hover-glow">
+                    <div class="text-3xl md:text-4xl font-bold mb-2">8</div>
+                    <div class="text-sm md:text-base opacity-90">Categories</div>
+                </div>
+                <div class="glass-effect rounded-2xl p-6 hover-glow">
+                    <div class="text-3xl md:text-4xl font-bold mb-2">24/7</div>
+                    <div class="text-sm md:text-base opacity-90">Coverage</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Decorative Wave -->
+    <div class="absolute bottom-0 left-0 right-0">
+        <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full">
+            <path d="M0 0L60 10C120 20 240 40 360 46.7C480 53 600 47 720 43.3C840 40 960 40 1080 46.7C1200 53 1320 67 1380 73.3L1440 80V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0V0Z" fill="currentColor" class="text-white dark:text-gray-900"/>
+        </svg>
     </div>
 </section>
 
-<!-- Search and Filter -->
-<section class="container mx-auto px-4 py-8">
-    <form method="GET" action="/news" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <!-- Search -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Search</label>
-                <input 
-                    type="text" 
-                    name="search" 
-                    value="<?= htmlspecialchars($search) ?>"
-                    placeholder="Search news..."
-                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                >
-            </div>
-            
-            <!-- Category -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Category</label>
-                <select 
-                    name="category"
-                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                >
-                    <option value="">All Categories</option>
-                    <option value="technology" <?= $category === 'technology' ? 'selected' : '' ?>>Technology</option>
-                    <option value="business" <?= $category === 'business' ? 'selected' : '' ?>>Business</option>
-                    <option value="entertainment" <?= $category === 'entertainment' ? 'selected' : '' ?>>Entertainment</option>
-                    <option value="sports" <?= $category === 'sports' ? 'selected' : '' ?>>Sports</option>
-                    <option value="health" <?= $category === 'health' ? 'selected' : '' ?>>Health</option>
-                    <option value="science" <?= $category === 'science' ? 'selected' : '' ?>>Science</option>
-                    <option value="politics" <?= $category === 'politics' ? 'selected' : '' ?>>Politics</option>
-                    <option value="world" <?= $category === 'world' ? 'selected' : '' ?>>World</option>
-                </select>
-            </div>
-            
-            <!-- Submit -->
-            <div class="flex items-end">
-                <button 
-                    type="submit"
-                    class="w-full px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
-                >
-                    Apply Filters
-                </button>
-            </div>
+<!-- Premium Search and Filter -->
+<section class="container mx-auto px-4 -mt-12 relative z-20">
+    <div class="search-container max-w-5xl mx-auto">
+        <div class="search-inner p-8">
+            <form method="GET" action="/news" id="searchForm">
+                <!-- Filter Header -->
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Filter News</h2>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Find exactly what you're looking for</p>
+                        </div>
+                    </div>
+                    <?php if ($search || $category): ?>
+                        <a href="/news" class="text-sm text-purple-600 dark:text-purple-400 hover:underline font-medium flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Clear Filters
+                        </a>
+                    <?php endif; ?>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+                    <!-- Search Input -->
+                    <div class="md:col-span-5 filter-item fade-in-up">
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                            <span class="flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                                Search Articles
+                            </span>
+                        </label>
+                        <div class="relative">
+                            <input 
+                                type="text" 
+                                name="search" 
+                                value="<?= htmlspecialchars($search) ?>"
+                                placeholder="Type keywords..."
+                                class="modern-input w-full px-5 py-3.5 rounded-xl focus:outline-none text-gray-900 dark:text-white placeholder-gray-400"
+                            >
+                            <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                <svg class="w-5 h-5 text-gray-400 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Category Dropdown -->
+                    <div class="md:col-span-4 filter-item fade-in-up">
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                            <span class="flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                                </svg>
+                                Category
+                            </span>
+                        </label>
+                        <select 
+                            name="category"
+                            class="modern-input modern-select w-full px-5 py-3.5 rounded-xl focus:outline-none focus:ring-2 placeholder-gray-400 focus:ring-blue-500 text-gray-900 cursor-pointer"
+                        >
+                            <option value="">All Categories</option>
+                            <option value="technology" <?= $category === 'technology' ? 'selected' : '' ?>>🔧 Technology</option>
+                            <option value="business" <?= $category === 'business' ? 'selected' : '' ?>>💼 Business</option>
+                            <option value="entertainment" <?= $category === 'entertainment' ? 'selected' : '' ?>>🎬 Entertainment</option>
+                            <option value="sports" <?= $category === 'sports' ? 'selected' : '' ?>>⚽ Sports</option>
+                            <option value="health" <?= $category === 'health' ? 'selected' : '' ?>>🏥 Health</option>
+                            <option value="science" <?= $category === 'science' ? 'selected' : '' ?>>🔬 Science</option>
+                            <option value="politics" <?= $category === 'politics' ? 'selected' : '' ?>>🏛️ Politics</option>
+                            <option value="world" <?= $category === 'world' ? 'selected' : '' ?>>🌍 World</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="md:col-span-3 filter-item fade-in-up">
+                        <button 
+                            type="submit"
+                            class="modern-button w-full px-6 py-3.5 text-white rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                            </svg>
+                            <span>Apply Filters</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Active Filters Display -->
+                <?php if ($search || $category): ?>
+                    <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Active Filters:</span>
+                            <?php if ($search): ?>
+                                <span class="filter-badge inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-100 to-indigo-100 dark:from-purple-900 dark:to-indigo-900 text-purple-700 dark:text-purple-300 rounded-full text-sm font-medium">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                    "<?= htmlspecialchars($search) ?>"
+                                </span>
+                            <?php endif; ?>
+                            <?php if ($category): ?>
+                                <span class="filter-badge inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900 text-indigo-700 dark:text-indigo-300 rounded-full text-sm font-medium">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                                    </svg>
+                                    <?= ucfirst(htmlspecialchars($category)) ?>
+                                </span>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </form>
         </div>
-    </form>
+    </div>
 </section>
+
 
 <!-- News Grid -->
 <section class="container mx-auto px-4 py-8">

@@ -12,7 +12,7 @@ $isLocal = (
 );
 
 // Define environment constant
-define('IS_LOCAL_ENV', false);
+define('IS_LOCAL_ENV',);
 
 // API Configuration - Auto-switch based on environment
 if (IS_LOCAL_ENV) {

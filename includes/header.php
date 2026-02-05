@@ -30,7 +30,7 @@ require_once __DIR__ . '/config.php';
         }
     </script>
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo BASE_PATH; ?>/assets/css/style.css">
 
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
